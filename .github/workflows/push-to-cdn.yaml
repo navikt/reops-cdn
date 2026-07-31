@@ -1,0 +1,49 @@
+name: "push-to-cdn"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "src/tracker/**"
+      - "scripts/build-tracking-scripts.js"
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - uses: "actions/checkout@v4"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build tracker scripts
+        run: pnpm run build:tracking-scripts
+
+      - name: Upload static files to CDN
+        uses: nais/deploy/actions/cdn-upload/v2@master
+        with:
+          team: team-researchops
+          source: ./public/sporing
+          destination: "" # uploads folder to team root
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+
+      - run: echo uploaded file ${{ steps.upload.outputs.uploaded }}
+        shell: bash

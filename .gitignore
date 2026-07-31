@@ -1,0 +1,8 @@
+# Editor directories and files
+.idea
+
+# Dependencies
+node_modules/
+
+# Build output - minified tracker scripts (generated from src/tracker/)
+public/
