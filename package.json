@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "ResearchOps Umami tracking scripts (sporingsskript) - build og CDN-opplasting",
   "scripts": {
-    "build:tracking-scripts": "node build/build.js"
+    "build:tracking-scripts": "node build/build.js",
+    "check:version-bump": "node build/check-version-bump.js"
   },
   "keywords": [
     "umami",
