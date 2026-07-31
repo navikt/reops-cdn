@@ -41,6 +41,25 @@ Dette repoet kjører ikke som egen Nais-app (ingen `nais.yaml`) - det bygger kun
 
 Rollback: revert commiten på `main` og push (eller kjør `workflow_dispatch` mot en tidligere commit) - dette bygger og laster opp forrige versjon på nytt.
 
+## CDN
+
+Skriptene er tilgjengelig på:
+
+```
+https://cdn.nav.no/team-researchops/sporing/sporing.js
+https://cdn.nav.no/team-researchops/sporing/sporing-dev.js
+https://cdn.nav.no/team-researchops/sporing/sporing-reops.js
+```
+
+For å se filene direkte i bucketen (f.eks. for å verifisere en opplasting eller slette en feilopplastet fil), se [Nais Console](https://console.ci-nais.cloud.nais.io) -> team-researchops -> `Settings` -> `Managed resources` -> `Team CDN bucket`-lenken, som tar deg til bucketen i Google Cloud Console.
+
+For å sammenligne lokalt bygde filer i `dist/` mot det som faktisk ligger på CDN:
+
+```bash
+pnpm run build:tracking-scripts
+pnpm run diff:cdn
+```
+
 ## Andre ressurser
 
 Se [reops-meta](https://github.com/navikt/reops-meta) for mer om ResearchOps sine repoer og systemer.
