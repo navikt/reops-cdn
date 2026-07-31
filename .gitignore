@@ -4,5 +4,5 @@
 # Dependencies
 node_modules/
 
-# Build output - minified tracker scripts (generated from src/tracker/)
-public/
+# Build output - minified tracker scripts (generated from src/)
+dist/

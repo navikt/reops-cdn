@@ -6,8 +6,8 @@ on:
     branches:
       - "main"
     paths:
-      - "src/tracker/**"
-      - "scripts/build-tracking-scripts.js"
+      - "src/**"
+      - "build/build.js"
 
 jobs:
   upload:
@@ -40,7 +40,7 @@ jobs:
         uses: nais/deploy/actions/cdn-upload/v2@master
         with:
           team: team-researchops
-          source: ./public/sporing
+          source: ./dist
           destination: "" # uploads folder to team root
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}

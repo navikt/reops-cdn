@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 /**
  * Build script for tracker variants
- * Minifies the source trackers and outputs to public/sporing/
+ * Minifies the source trackers and outputs to dist/
  */
 
 const fs = require("fs");
 const path = require("path");
 const { minify } = require("terser");
 
-const srcDir = path.join(__dirname, "..", "src", "tracker");
-const outputDir = path.join(__dirname, "..", "public", "sporing");
+const srcDir = path.join(__dirname, "..", "src");
+const outputDir = path.join(__dirname, "..", "dist");
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
