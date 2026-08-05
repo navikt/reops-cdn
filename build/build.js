@@ -18,9 +18,7 @@ if (!fs.existsSync(outputDir)) {
 
 // Scripts to build
 const scripts = [
-  { input: "sporing.js", output: "sporing.js" },
-  { input: "sporing-dev.js", output: "sporing-dev.js" },
-  { input: "sporing-reops.js", output: "sporing-reops.js" },
+  { input: "innblikk-navno.md", output: "innblikk-navno.md" }
 ];
 
 console.log("Building tracker scripts...\n");
