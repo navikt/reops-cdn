@@ -8,10 +8,10 @@ const fs = require("fs");
 const path = require("path");
 const https = require("https");
 
-const CDN_BASE = "https://cdn.nav.no/team-researchops/skill";
+const CDN_BASE = "https://cdn.nav.no/team-researchops/sporing";
 const distDir = path.join(__dirname, "..", "dist");
 
-const files = ["innblikk-navno.md"];
+const files = ["sporing.js", "sporing-dev.js", "sporing-reops.js"];
 
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
