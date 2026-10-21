@@ -24,7 +24,6 @@
   const attr = currentScript.getAttribute.bind(currentScript);
 
   const website = attr(`${_data}website-id`);
-  // Route to dev proxy for *.dev.nav.no, otherwise production url
   const hostUrl = "https://reops-event-proxy.ekstern.dev.nav.no";
   const beforeSend = attr(`${_data}before-send`);
   const tag = attr(`${_data}tag`) || undefined;
@@ -103,7 +102,9 @@
 
   const handleClicks = () => {
     const trackElement = async (el) => {
-      const eventName = el.getAttribute(eventNameAttribute) || el.getAttribute(eventNameAttributeLegacy);
+      const eventName =
+        el.getAttribute(eventNameAttribute) ||
+        el.getAttribute(eventNameAttributeLegacy);
       if (eventName) {
         const eventData = {};
 
@@ -121,7 +122,11 @@
       if (!parentElement) return trackElement(el);
 
       const { href, target } = parentElement;
-      if (!parentElement.getAttribute(eventNameAttribute) && !parentElement.getAttribute(eventNameAttributeLegacy)) return;
+      if (
+        !parentElement.getAttribute(eventNameAttribute) &&
+        !parentElement.getAttribute(eventNameAttributeLegacy)
+      )
+        return;
 
       if (parentElement.tagName === "BUTTON") {
         return trackElement(parentElement);

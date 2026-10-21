@@ -13,6 +13,12 @@ const distDir = path.join(__dirname, "..", "dist");
 
 const files = ["sporing.js", "sporing-dev.js", "sporing-reops.js"];
 
+// Files live in dist/sporing/<name> locally and at <CDN_BASE>/<name> remotely,
+// where CDN_BASE already includes the /sporing path segment.
+function localPathFor(file) {
+  return path.join(distDir, "sporing", file);
+}
+
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
     https
@@ -33,7 +39,7 @@ async function main() {
   let anyDiff = false;
 
   for (const file of files) {
-    const localPath = path.join(distDir, file);
+    const localPath = localPathFor(file);
 
     if (!fs.existsSync(localPath)) {
       console.log(`⚠ ${file}: not found in dist/, run "pnpm run build:tracking-scripts" first. Skipping.`);

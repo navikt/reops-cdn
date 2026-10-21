@@ -13,9 +13,15 @@ src/                        # Kildefiler (rediger disse)
   ├── sporing-dev.js       # Dev tracker med hardkodet endpoint
   └── sporing-reops.js     # ResearchOps-variant
 
-build/build.js              # Bygger og minifiserer src/ -> dist/
+plain/                      # Kopieres verbatim til CDN (ingen minifisering)
+  └── skills/              # F.eks. skills/reops-add-tracking/SKILL.md
+                           # -> cdn.nav.no/team-researchops/skills/reops-add-tracking/SKILL.md
+
+build/build.js              # Bygger og minifiserer src/ -> dist/sporing/, kopierer plain/ -> dist/
 dist/                       # Build output (git-ignored)
 ```
+
+Alt under `plain/` lastes opp uendret ved push til `main`. Bruk det for statiske filer som skal lenkes til offentlig (skills, JSON, docs).
 
 ## Komme i gang
 
@@ -49,6 +55,12 @@ Skriptene er tilgjengelig på:
 https://cdn.nav.no/team-researchops/sporing/sporing.js
 https://cdn.nav.no/team-researchops/sporing/sporing-dev.js
 https://cdn.nav.no/team-researchops/sporing/sporing-reops.js
+```
+
+Filer fra `plain/` havner på team-roten, f.eks.:
+
+```
+https://cdn.nav.no/team-researchops/skills/reops-add-tracking/SKILL.md
 ```
 
 For å se filene direkte i bucketen (f.eks. for å verifisere en opplasting eller slette en feilopplastet fil), se [Nais Console](https://console.ci-nais.cloud.nais.io) -> team-researchops -> `Settings` -> `Managed resources` -> `Team CDN bucket`-lenken, som tar deg til bucketen i Google Cloud Console.
