@@ -5,23 +5,31 @@
  * Usage: node build/check-version-bump.js <base-ref>
  */
 
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 
 const baseRef = process.argv[2] || "origin/main";
 const versionRe = /const VERSION\s*=\s*["'](.+?)["']/;
 
-function sh(cmd) {
-  return execSync(cmd, { encoding: "utf8" }).trim();
+function git(args) {
+  return execFileSync("git", args, { encoding: "utf8" });
 }
 
 const fs = require("fs");
+
+// Resolve refs without allowing them to become command-line options.
+const baseCommit = git([
+  "rev-parse",
+  "--verify",
+  "--end-of-options",
+  `${baseRef}^{commit}`,
+]).trim();
 
 function versionAt(ref, file) {
   try {
     const content =
       ref === "WORKING_TREE"
         ? fs.readFileSync(file, "utf8")
-        : sh(`git show ${ref}:${file}`);
+        : git(["show", "--end-of-options", `${ref}:${file}`]);
     const m = content.match(versionRe);
     return m ? m[1] : null;
   } catch {
@@ -30,14 +38,21 @@ function versionAt(ref, file) {
 }
 
 // include committed diffs (base...HEAD) AND uncommitted working-tree changes
-const committedFiles = sh(`git diff --name-only ${baseRef}...HEAD -- src/`)
-  .split("\n")
+// NUL delimiters preserve spaces, newlines, quotes, and shell metacharacters.
+const committedFiles = git([
+  "diff", "--name-only", "-z", `${baseCommit}...HEAD`, "--", "src/",
+])
+  .split("\0")
   .filter(Boolean);
-const workingTreeFiles = sh(`git diff --name-only HEAD -- src/`)
-  .split("\n")
+const workingTreeFiles = git([
+  "diff", "--name-only", "-z", "HEAD", "--", "src/",
+])
+  .split("\0")
   .filter(Boolean);
-const untrackedFiles = sh(`git ls-files --others --exclude-standard -- src/`)
-  .split("\n")
+const untrackedFiles = git([
+  "ls-files", "--others", "--exclude-standard", "-z", "--", "src/",
+])
+  .split("\0")
   .filter(Boolean);
 
 const changedFiles = [
@@ -52,7 +67,7 @@ if (changedFiles.length === 0) {
 let failed = false;
 
 for (const file of changedFiles) {
-  const oldVersion = versionAt(baseRef, file);
+  const oldVersion = versionAt(baseCommit, file);
   const newVersion = versionAt("WORKING_TREE", file);
 
   if (oldVersion === null) {

@@ -5,6 +5,7 @@
   "scripts": {
     "build:tracking-scripts": "node build/build.js",
     "check:version-bump": "node build/check-version-bump.js",
+    "test:version-bump": "node --test build/check-version-bump.test.js",
     "diff:cdn": "node build/diff-cdn.js"
   },
   "keywords": [
